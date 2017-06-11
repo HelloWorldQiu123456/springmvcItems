@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.UserMapperCustom" >
+
+  
+   <sql id="query_users_where">
+   	<!-- 使用动态sql，通过if判断，满足条件进行sql拼接 -->
+   	<!-- 商品查询条件通过UsersQueryVo包装对象 中usersCustom属性传递 -->
+   		<if test="usersCustom!=null">
+   			<if test="usersCustom.name!=null and usersCustom.name!=''">
+   				user.username LIKE '%${usersCustom.name}%'
+   			</if>
+   		</if>
+	
+   </sql>
+  	
+  	
+  	<select id="findUsersList" parameterType="cn.itcast.ssm.po.UsersQueryVo"
+  		 resultType="cn.itcast.ssm.po.UsersCustom">
+  		SELECT user.* FROM user 
+  		<where>
+  			<include refid="query_users_where"></include>
+  		</where>
+  	</select>
+  	
+</mapper>
